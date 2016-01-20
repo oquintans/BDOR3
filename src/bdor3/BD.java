@@ -18,10 +18,10 @@ import java.util.logging.Logger;
  * @author oracle
  */
 public class BD {
-
+    
     static Connection conn;
     ResultSet rs;
-
+    
     public void conexion() {
         try {
             String driver = "jdbc:oracle:thin:";
@@ -31,30 +31,30 @@ public class BD {
             String usuario = "hr";
             String password = "hr";
             String url = driver + usuario + "/" + password + "@" + host + ":" + porto + ":" + sid;
-
+            
             conn = DriverManager.getConnection(url);
             System.out.println("Conexion establecida.");
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void listar() {
         try {
             PreparedStatement ps = conn.prepareStatement("select empregado.* from empregado");
             rs = (ResultSet) ps.executeQuery();
-
+            
             while (rs.next()) {
                 java.sql.Struct jqs = (java.sql.Struct) rs.getObject(1);
                 Object[] x = jqs.getAttributes();
                 String nombre = (String) x[0];
                 java.math.BigDecimal num = (java.math.BigDecimal) x[1];
-                System.out.println("Nombre: " + nombre + "\nNum: " + num);
+                System.out.println("Nombre: " + nombre + "\nNum: " + num + "\nEdad: " + rs.getString(2));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
 }
